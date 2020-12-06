@@ -10,5 +10,11 @@ def seating_to_binary(seating):
 
 if __name__ == '__main__':
     seats = [seat.strip() for seat in open("input").readlines()]
-    highest_ID = int(max(list(map(seating_to_binary, seats))), 2)
+    seat_ids = [int(seat, 2) for seat in list(map(seating_to_binary, seats))]
+
+    highest_ID = max(seat_ids)
     print(f"Highest seat found is {binary_to_seating(format(highest_ID, '#012b'))} with ID {highest_ID}")
+
+    for seat in range(1024):
+        if seat not in seat_ids and (seat + 1 in seat_ids) and (seat - 1 in seat_ids):
+            print(f'Your missing seat is {binary_to_seating(format(seat, "#012b"))} with ID {seat}')
