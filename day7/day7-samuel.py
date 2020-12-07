@@ -4,6 +4,7 @@ data = open("input", "r")
 
 bags = {}
 
+# make a dictionary of color => array of (number, color)
 for line in data:
   line = line.strip().replace(",", "").replace(".", "")
   words = line.split(" ")
@@ -17,12 +18,13 @@ for line in data:
     inner.append((num, name))
   bags[outer] = inner
 
+# start with the desired color and collect the set of all the colors that can contain the collected colors
 valid = set(["shiny gold"])
 done = False
 while not done:
   done = True
   for outer, inner in bags.items():
-    if outer in valid:
+    if outer in valid: # already seen this color
       continue
     for n, c in inner:
       if c in valid:
@@ -32,6 +34,7 @@ while not done:
 
 print(len(valid) - 1)
 
+# recursively accumulate the bag totals
 def check_bag(color):
   count = 1
   if not color in bags:
