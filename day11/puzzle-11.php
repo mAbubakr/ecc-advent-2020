@@ -1,5 +1,4 @@
 <?php
-
 class Life {
 	public $grid = array();
 	const INPUTFILENAME = 'input';
@@ -110,7 +109,6 @@ class Life {
 		$output = '';
 		for ($i=0; $i < sizeof($grid); $i++) { 
 			for ($j=0; $j < sizeof($grid[$i]); $j++) { 
-				// echo "i,j = " . $grid[$i][$j] . ", " . $new[$i][$j] . "\n";
 				$output .= "[" . $grid[$i][$j] . "]";
 			}
 			$output .= PHP_EOL;
@@ -120,35 +118,24 @@ class Life {
 
 } // class Life
 
-$life = new Life();
-$life->createGrid();
+function run($problem = "A") {
+	$life = new Life();
+	$life->createGrid();
+	$count = 0;
+	$notequal = true;
+	while ($notequal) {
+		++$count;
+		$notequal = $life->runLife($problem);
+	}
+	$sitters = 0;
+	array_walk_recursive($life->grid, function($item) use (&$sitters) {
+	    if ($item === "#") ++$sitters;
+	});
+
+	echo "Sitters stable at '$sitters' after $count runs.\n";
+}
 echo "Puzzle 11a:\n";
-$count = 0;
-$notequal = true;
-while ($notequal) {
-	++$count;
-	$notequal = $life->runLife("A");
-}
-$sitters = 0;
-array_walk_recursive($life->grid, function($item) use (&$sitters) {
-    if ($item === "#") ++$sitters;
-});
-
-echo "Sitters stable at '$sitters' after $count runs.\n";
+run();
 echo "**********************************************************\n";
-echo "**********************************************************\n";
-
 echo "Puzzle 11b:\n";
-$life->createGrid(); // reset grid
-$count = 0;
-$notequal = true;
-while ($notequal) {
-	++$count;
-	$notequal = $life->runLife("B");
-}
-$sitters = 0;
-array_walk_recursive($life->grid, function($item) use (&$sitters) {
-    if ($item === "#") ++$sitters;
-});
-
-echo "Sitters stable at '$sitters' after $count runs.\n";
+run("B");
