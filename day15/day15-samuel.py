@@ -1,36 +1,21 @@
 #!/usr/bin/python3
 
-nums = {}
-data = [0,3,1,6,7]
-num = 5
-for i in range(len(data)):
-  nums[data[i]] = i + 1
+def do_numbers(data, count):
+  count -= 1
+  nums = {}
+  num = data[-1]
+  data = data[:-1]
+  for i in range(len(data)):
+    nums[data[i]] = i + 1
+  for i in range(len(data), count):
+    if num in nums:
+      nnum = i + 1 - nums[num]
+    else:
+      nnum = 0
+    nums[num] = i + 1
+    num = nnum
+  return num
 
-for i in range(len(data), 2019):
-  if num in nums:
-    nnum = i + 1 - nums[num]
-  else:
-    nnum = 0
-  data.append(num)
-  nums[num] = i + 1
-  num = nnum
-
-print(num)
-
-nums = {}
-data = [0,3,1,6,7]
-num = 5
-for i in range(len(data)):
-  nums[data[i]] = i + 1
-
-for i in range(len(data), 29999999):
-  if num in nums:
-    nnum = i + 1 - nums[num]
-  else:
-    nnum = 0
-  data.append(num)
-  nums[num] = i + 1
-  num = nnum
-
-print(num)
+print(do_numbers([0,3,1,6,7,5], 2020))
+print(do_numbers([0,3,1,6,7,5], 30000000))
 
