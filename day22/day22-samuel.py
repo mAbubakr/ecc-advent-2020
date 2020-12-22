@@ -38,12 +38,12 @@ deck.reverse()
 print(sum([i * n for i, n in enumerate(deck, 1)]))
 
 def play(deck1, deck2):
-  history = []
+  history = set()
   while deck1 and deck2:
-    entry = (deck1[:], deck2[:])
+    entry = (tuple(deck1[:]), tuple(deck2[:]))
     if entry in history:
       return 1, deck1
-    history.append(entry)
+    history.add(entry)
     n1 = deck1[0]
     deck1.remove(n1)
     n2 = deck2[0]
