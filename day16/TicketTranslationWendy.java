@@ -112,9 +112,11 @@ public class TicketTranslationWendy {
 			.filter(p -> p.getFieldName().startsWith("departure"))
 			.forEach(p -> System.out.println(p.toString())); //sanity
 		
+		System.out.println("========");						
+		
 		long product = positionsList.stream()
 				.filter(p -> p.getFieldName().startsWith("departure"))
-				.mapToLong(p -> myTicket.get(p.getField()))
+				.mapToLong(p -> myTicket.get(p.getIndex()))
 				.reduce(1, (a,b) -> a*b);
 		
 		System.out.println("Answer is " + product);
@@ -140,6 +142,10 @@ public class TicketTranslationWendy {
 			if (validFields.size() == 1) {
 				field = validFields.first();				
 			}
+		}
+		
+		public int getIndex() {
+			return index;
 		}
 		
 		public int getField() {
