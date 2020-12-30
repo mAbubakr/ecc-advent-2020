@@ -2,7 +2,7 @@ public class CrabCupsWendy {
 
 	private int simCount;
 	private int currentCup;
-    private CircularBufferLL<Integer> cb; 
+    private CircularBufferLL cb; 
     private int max;
 	
 	public CrabCupsWendy(String input, int simCount) {
@@ -11,7 +11,7 @@ public class CrabCupsWendy {
 		max = 9;
 		
         // Creating the Circular Buffer 
-        cb = new CircularBufferLL<>(max); 
+        cb = new CircularBufferLL(max); 
   
         // Adding elements to the circular Buffer
 		input.chars().forEach(c -> cb.add(Integer.parseInt("" + (char)c)));        
@@ -25,7 +25,7 @@ public class CrabCupsWendy {
 		max = totalCups;
 		
         // Creating the Circular Buffer 
-        cb = new CircularBufferLL<>(totalCups); 
+        cb = new CircularBufferLL(totalCups); 
   
         // Adding elements to the circular Buffer
 		input.chars().forEach(c -> cb.add(Integer.parseInt("" + (char)c)));
@@ -62,7 +62,6 @@ public class CrabCupsWendy {
 			if (destination == 0) {
 				destination = max;
 			}
-//			while(!cb.contains(destination)) {
 			while(destination == currentCup || destination == c1 || destination == c2 || destination == c3) {			
 				destination = destination - 1;
 				if (destination == 0) {
@@ -97,12 +96,12 @@ public class CrabCupsWendy {
 		
 		long time = System.currentTimeMillis();
 		for (int move=0; move<simCount; move++) {
-			if (move % 1000 == 0) {
-				System.out.format("====== Move %s ======\n", move);
-				long newTime = System.currentTimeMillis();				
-				System.out.println("Took: " + (newTime - time));
-				time = newTime;
-			}
+//			if (move % 1000 == 0) {
+//				System.out.format("====== Move %s ======\n", move);
+//				long newTime = System.currentTimeMillis();				
+//				System.out.println("Took: " + (newTime - time));
+//				time = newTime;
+//			}
 			
 			currentCup = cb.peek();
 //			System.out.format("Current cup: %s, Current config: %s\n", currentCup, cb.toString());		
@@ -157,26 +156,29 @@ public class CrabCupsWendy {
 		return (long)next1 * (long)next2;
 	}
 	
-	//https://www.geeksforgeeks.org/java-program-to-implement-circular-buffer/	  
+	//Modified from https://www.geeksforgeeks.org/java-program-to-implement-circular-buffer/	  
 	// A Generic Node class is used to create a Linked List 
-	class Node<E> { 
+	class Node { 
 	    // Data Stored in each Node of the Linked List 
-	    E data; 
+		int data; 
 	    // Pointer to the next node in the Linked List 
-	    Node<E> next; 
+	    Node next; 
+	    
+	    // Pointer to previous node in the Linked List
+	    Node prev;
 	  
 	    // Node class constructor used to initializes 
 	    // the data in each Node 
-	    Node(E data) { this.data = data; } 
+	    Node(int data) { this.data = data; } 
 	} 
 	  
-	class CircularBufferLL<E> { 
-	  
+	class CircularBufferLL{ 
+		Node[] nodes;
 	    // Head node 
-	    Node<E> head; 
+	    Node head; 
 	  
 	    // Tail Node 
-	    Node<E> tail; 
+	    Node tail; 
 	    int size = 0; 
 	    int capacity = 0; 
 	  
@@ -184,31 +186,27 @@ public class CrabCupsWendy {
 	    CircularBufferLL(int capacity) 
 	    { 
 	        this.capacity = capacity; 
+	        this.nodes = new Node[capacity+1];
 	    } 
 	  
 	    // Addition of Elements 
-	    public void add(E element) 
+	    public void add(int element) 
 	    { 
 	  
 	        // Size of buffer increases as elements 
 	        // are added to the Linked List 
-	        size++; 
-	  
-	        // Checking if the buffer is full 
-	        if (size > capacity) { 
-	        	System.err.println("Buffer Overflow");
-	        	System.exit(-1);
-	        } 
+	        size++; 	  
 	  
 	        // Checking if the buffer is empty 
 	        if (head == null) { 
-	            head = new Node<>(element); 
+	            head = new Node(element); 
 	            tail = head; 
+		        nodes[element] = head;	            
 	            return; 
 	        } 
 	  
 	        // Node element to be linked 
-	        Node<E> temp = new Node<>(element); 
+	        Node temp = new Node(element); 
 	  
 	        // Referencing the last element to the head node 
 	        temp.next = head; 
@@ -216,22 +214,21 @@ public class CrabCupsWendy {
 	        // Updating the tail reference to the 
 	        // latest node added 
 	        tail.next = temp; 
+	        
+	        temp.prev = tail;
 	  
 	        // Updating the tail to the latest node added 
 	        tail = temp; 
+	        
+	        nodes[element] = temp;
 	    } 
 	  
 	    // Retrieving the head element 
-	    public E get() 
+	    public int get() 
 	    { 
 	  
-	        // Cheking if the buffer is empty 
-	        if (size == 0) { 
-	        	System.err.println("Empty Buffer");
-	        	System.exit(-1);	        	
-	        } 
 	        // Getting the element 
-	        E element = head.data; 
+	        int element = head.data; 
 	  
 	        // Updating the head pointer 
 	        head = head.next; 
@@ -239,6 +236,8 @@ public class CrabCupsWendy {
 	        // Updating the tail reference to 
 	        // the new head pointer 
 	        tail.next = head; 
+	        
+	        head.prev = tail;
 	  
 	        // Decrementing the size 
 	        size--; 
@@ -251,21 +250,14 @@ public class CrabCupsWendy {
 	    } 
 	  
 	    // Retrieving the head element without deleting 
-	    public E peek()
+	    public int peek()
 	    { 
 	  
-	        // Checking if the buffer is empty 
-	        if (size == 0) { 
-	        	System.err.println("Empty Buffer");
-	        	System.exit(-1);	
-	        } 
 	        // Getting the element 
-	        E element = head.data; 
+	        int element = head.data; 
 	        return element; 
 	    } 
-	  
-	    // Checking if the buffer is empty 
-	    public boolean isEmpty() { return size == 0; } 
+	 
 	  
 	    // Retrieving the size of the buffer 
 	    public int size() { return size; } 
@@ -276,31 +268,13 @@ public class CrabCupsWendy {
 	    	tail = tail.next;
 	    }
 	    
-	    public void moveHead(E element) {
-	    	Node m = tail;
-	    	Node n = head;
-	    	for (int i=0; i<size; i++) {
-	    		if (element.equals(n.data)) {
-	    			break;
-	    		} else {
-	    			m = m.next;	    			
-	    			n = n.next;
-	    		}	    			
-	    	}	 
-	    	tail = m;
-	    	head = n;
+	    public void moveHead(int element) {
+	    	head = nodes[element];
+	    	tail = head.prev;
 	    }	    
 	    
-	    public void moveTail(E element) {
-	    	Node n = head;
-	    	for (int i=0; i<size; i++) {
-	    		if (element.equals(n.data)) {
-	    			break;
-	    		} else {
-	    			n = n.next;
-	    		}	    			
-	    	}	 
-	    	tail = n;
+	    public void moveTail(int element) {
+	    	tail = nodes[element];
 	    	head = tail.next;
 	    }
 	    
@@ -312,32 +286,10 @@ public class CrabCupsWendy {
 	    		n = n.next;
 	    	}
 	    	return output;
-	    }
+	    }	    
 	    
-	    public boolean contains(E element) {
-	    	Node n = head;
-	    	for (int i=0; i<size; i++) {
-	    		if (element.equals(n.data)) {
-	    			return true;
-	    		} else {
-	    			n = n.next;
-	    		}
-	    			
-	    	}
-	    	return false;
-	    }
-	    
-	    public int findNextTo(E element) {
-	    	Node n = head;
-	    	for (int i=0; i<size; i++) {
-	    		if (element.equals(n.data)) {
-	    			return (int)n.next.data;
-	    		} else {
-	    			n = n.next;
-	    		}
-	    			
-	    	}
-	    	return -1;	    	
+	    public int findNextTo(int element) {
+	    	return nodes[element].next.data; 	
 	    }
 	} 	
 	
@@ -352,7 +304,9 @@ public class CrabCupsWendy {
 		//part2
 		ccw = new CrabCupsWendy("389125467",1000000,10000000);
 		assert ccw.sim2() == Long.valueOf("149245887792");
-
+		ccw = new CrabCupsWendy("643719258",1000000,10000000);
+		System.out.println("Part 2 answer is " + ccw.sim2());		
+		
 	}
 
 }
