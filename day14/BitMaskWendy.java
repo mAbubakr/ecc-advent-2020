@@ -49,7 +49,7 @@ public class BitMaskWendy {
 	}
 	
 	public static void run2() throws IOException {
-		List<String> input = Files.readAllLines(Paths.get("./day14/test3"));
+		List<String> input = Files.readAllLines(Paths.get("./day14/input"));
 		
 		Map<Integer, Boolean> mask = null;
 		Set<Integer> maskFloating = null;
@@ -90,8 +90,8 @@ public class BitMaskWendy {
 				Set<Long> addresses = new HashSet<>();
 				addresses.add(convertedIndex);
 				maskFloating.forEach(i-> {
-					System.out.println("float: " + i);
-					int diff = (int)Math.pow(2, i);
+					System.out.println("float: " + i);					
+					long diff = (long)Math.pow(2, i);
 					System.out.println(diff);
 					Set<Long> newAddresses = new HashSet<>();
 					addresses.forEach(a -> newAddresses.add(a + diff));
