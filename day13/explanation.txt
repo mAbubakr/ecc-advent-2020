@@ -1,0 +1,44 @@
+First watch this video that explains CRT: https://www.youtube.com/watch?v=ru7mWZJlRQg
+There's also a video explaining the modular inverse for reference: https://www.youtube.com/watch?v=mgvA3z-vOzc
+
+Here's my input, I'll use it for the explanation:
+
+23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,733,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,19,x,x,x,x,x,x,x,x,x,29,x,449,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,37
+
+One thing I noticed is that they are all primes (or at least coprime) which means that you don't have to deal with any common factors and that's what makes this process work.  Any further references to prime numbers in this document apply equally to coprime.
+To keep this walkthrough simple, I'll take only 3 of the buses to work with: 23 (offset 0), 733 (offset 23), and 13 (offset 36).
+
+The first step is to multiply all the numbers together to get 219167.  Because the numbers are prime, this is also the LCM (Lowest Common Multiple).
+Then start a running total=0.
+
+Now run the CRT For each bus.
+
+Bus 23 (offset 0)
+Get the multiple of the numbers without this bus: 219167 / 23 == 9529.
+Now calculate the Modular Inverse of 9529 mod 23.  Python 3 provides a convenient function for this: pow(9529, -1, 23) == 10.  So (9529 * 10) mod 23 == 1.
+The next step is to multiply the inverse by the offset we're looking for.  However, the offset for this bus is 0, so this term just goes away.
+The running total is still 0.
+
+Bus 733 (offset 23)
+Get the multiple of the numbers without this bus: 219167 / 733 == 299.
+Now calculate the Modular Inverse of 299 mod 733 == 76.
+This bus needs to leave 23 minutes after time t, so the actual modulo offset at time t will be 773 - 23 == 710.
+76 * 710 == 53960, but we can take that number modulo 733 because it's the same, so 76 * 710 mod 733 == 451.  You could also use the larger number as it will be accounted for at the end.
+299 * 451 == 134849 which is added to the running total to give 134849.
+
+Bus 13 (offset 36)
+Get the multiple of the numbers without this bus: 219167 / 13 == 16859.
+Now calculate the Modular Inverse of 16859 mod 13 == 6.
+This bus needs to leave 36 minutes after time t, so the actual modulo offset at time t will be 13 - 36 == -23.
+It's negative!  But that's ok, since modulo is defined equally for negative numbers.  There are two ways to resolve this.  13 - (36 % 13) == 3 or -23 % 13 == 3.
+3 * 6 % 13 == 5
+5 * 16859 == 84295 which is added to the running total to give 219144.
+
+Our answer is 219144 and it is the lowest solution, but it's not the only solution.  What happened in my case was that I ended up with a higher solution.  For example it could have been 438311 for these numbers.  Notice that it's larger than the LCM.  You can find another solution at every interval of the LCM because the LCM modulo any of the numbers == 0, so there's a solution at every 219144 + n * 219167 where n is any integer.
+Since we want the lowest solution, you can either subtract the LCM until the result is less than the LCM or more simply do 438311 % 219167 == 219144.
+
+To verify this, we can check:
+(219144 + 0) % 23 == 0
+(219144 + 23) % 733 == 0
+(219144 + 36) % 13 == 0
+
