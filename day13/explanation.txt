@@ -22,7 +22,7 @@ The running total is still 0.
 Bus 733 (offset 23)
 Get the multiple of the numbers without this bus: 219167 / 733 == 299.
 Now calculate the Modular Inverse of 299 mod 733 == 76.
-This bus needs to leave 23 minutes after time t, so the actual modulo offset at time t will be 773 - 23 == 710.
+This bus needs to leave 23 minutes after time t, so the actual modulo offset at time t will be 733 - 23 == 710.
 76 * 710 == 53960, but we can take that number modulo 733 because it's the same, so 76 * 710 mod 733 == 451.  You could also use the larger number as it will be accounted for at the end.
 299 * 451 == 134849 which is added to the running total to give 134849.
 
