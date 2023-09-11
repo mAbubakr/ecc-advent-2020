@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-data = open("input", "r")
+data = open("ssinput", "r")
 
 lines = [line.strip() for line in data]
 

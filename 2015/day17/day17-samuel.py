@@ -2,7 +2,7 @@
 
 from collections import Counter
 
-data = open("input", "r")
+data = open("ssinput", "r")
 
 sizes = [int(n) for n in data]
 sizes.sort(reverse=True)

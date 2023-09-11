@@ -2,7 +2,7 @@
 
 from itertools import chain
 
-data = open("input", "r")
+data = open("ssinput", "r")
 
 lines = [line.strip() for line in data]
 

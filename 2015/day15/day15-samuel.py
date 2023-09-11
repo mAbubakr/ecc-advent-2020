@@ -5,7 +5,7 @@ from math import prod
 
 linematch = re.compile("([^:]+): capacity (-?\d+), durability (-?\d+), flavor (-?\d+), texture (-?\d+), calories (-?\d+)")
 
-data = open("input", "r")
+data = open("ssinput", "r")
 lines = [line.strip() for line in data]
 
 ingred = []

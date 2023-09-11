@@ -5,7 +5,7 @@ import itertools
 
 pattern = re.compile("(.+) (\d+),(\d+) through (\d+),(\d+)")
 
-data = open("input", "r")
+data = open("ssinput", "r")
 lines = [line for line in data]
 
 row = [False] * 1000

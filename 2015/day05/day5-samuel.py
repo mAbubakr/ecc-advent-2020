@@ -2,7 +2,7 @@
 
 import re
 
-data = open("input", "r")
+data = open("ssinput", "r")
 lines = [line for line in data]
 
 nice = 0

@@ -2,7 +2,7 @@
 
 from math import prod
 
-data = open("input", "r")
+data = open("ssinput", "r")
 
 sizes = [int(line) for line in data]
 sizes.sort()

@@ -2,7 +2,7 @@
 
 import itertools
 
-data = open("input", "r")
+data = open("ssinput", "r")
 
 dists = {}
 for line in data:

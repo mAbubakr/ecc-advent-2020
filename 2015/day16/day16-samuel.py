@@ -19,7 +19,7 @@ gift = {
 
 sues = {}
 
-data = open("input", "r")
+data = open("ssinput", "r")
 
 for line in data:
   m = linematch.match(line)

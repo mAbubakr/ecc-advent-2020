@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-data = open("input", "r").read()
+data = open("ssinput", "r").read()
 
 x = 0
 y = 0

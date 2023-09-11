@@ -4,7 +4,7 @@ import re
 
 linematch = re.compile("(.+) => (.*)")
 
-data = open("input", "r")
+data = open("ssinput", "r")
 
 subs = {}
 

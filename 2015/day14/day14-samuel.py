@@ -5,7 +5,7 @@ import itertools
 
 linematch = re.compile("(.+) can fly (\d+) km/s for (\d+) seconds, but then must rest for (\d+) seconds\.")
 
-data = open("input", "r")
+data = open("ssinput", "r")
 
 deer = []
 

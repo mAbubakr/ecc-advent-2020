@@ -5,7 +5,7 @@ import itertools
 
 linematch = re.compile("(.+) would (gain|lose) (\d+) happiness units by sitting next to (.+)\.")
 
-data = open("input", "r")
+data = open("ssinput", "r")
 
 people = {}
 

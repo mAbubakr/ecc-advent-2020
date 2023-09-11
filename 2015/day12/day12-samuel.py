@@ -2,7 +2,7 @@
 
 import re
 
-data = open("input", "r").read()
+data = open("ssinput", "r").read()
 
 num = re.compile("(-?\d+)")
 

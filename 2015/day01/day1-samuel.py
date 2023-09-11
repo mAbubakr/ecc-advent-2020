@@ -2,7 +2,7 @@
 
 import itertools
 
-data = open("input", "r").read()
+data = open("ssinput", "r").read()
 
 print(data.count("(") - data.count(")"))
 
